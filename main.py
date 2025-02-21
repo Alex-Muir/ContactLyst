@@ -1,6 +1,22 @@
+import sqlite3
 
-
+def create_table(cur, con):
+    try:
+        with open('schema.sql') as f:
+            contacts_schema = f.read()
+    except FileNotFoundError:
+        print("'schema.sql' does not exist")
+    else:
+        cur.execute(contacts_schema)
+        con.commit()
+    
 def main():
+
+    con = sqlite3.connect("contacts.db")
+    cur = con.cursor()
+
+    create_table(cur, con)
+
     while True:
         print("""
             (1) Add a new contact
@@ -29,6 +45,5 @@ def main():
             print("Please enter a valid selection")
           
                 
-
 if __name__ == "__main__":
     main()
