@@ -1,35 +1,25 @@
 import sqlite3
+import helpers as h
+import database_manager as dm
 
-def create_table(cur, con):
-    try:
-        with open('schema.sql') as f:
-            contacts_schema = f.read()
-    except FileNotFoundError:
-        print("'schema.sql' does not exist")
-    else:
-        cur.execute(contacts_schema)
-        con.commit()
+
+# A simple contact book written in Python using sqlite
     
 def main():
 
     con = sqlite3.connect("contacts.db")
     cur = con.cursor()
 
-    create_table(cur, con)
+    dm.create_table(cur, con)
 
     while True:
-        print("""
-            (1) Add a new contact
-            (2) View all contacts
-            (3) Search for a contact by name
-            (4) Update contact details
-            (5) Delete a contact
-            (0) Exit
-            """)
+        h.print_menu()
         selection = input("What would you like to do? ")
 
         if selection == '1':
             print("'Add a new contact' selected")
+            contact_info = h.get_contact_info()
+            dm.add_contact(con, cur, contact_info)
         elif selection == '2':
             print("'View all contacts' selected")
         elif selection == '3':
