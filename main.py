@@ -22,6 +22,7 @@ def main():
             dm.add_contact(con, cur, contact_info)
         elif selection == '2':
             print("'View all contacts' selected")
+            dm.print_contacts(cur)
         elif selection == '3':
             print("'Search for a contact by name' selected")
         elif selection == '4':
@@ -30,6 +31,7 @@ def main():
             print("'Delete a contact' selected")
         elif selection == '0':
             print("'Exit' selected")
+            con.close()
             break
         else:
             print("Please enter a valid selection")
