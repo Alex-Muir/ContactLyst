@@ -27,6 +27,7 @@ def main():
             print("'Search for a contact by name' selected")
         elif selection == '4':
             print("'Update contact details' selected")
+            dm.update_contact(cur, con)
         elif selection == '5':
             print("'Delete a contact' selected")
             dm.delete_contact(cur, con)
