@@ -1,7 +1,7 @@
 import sqlite3
 import helpers as h
 
-# functions to aid in interfacing with the database
+# functions for interfacing with the database
 
 
 def create_table(cur, con):
@@ -30,3 +30,33 @@ def print_contacts(cur):
     print('-' * 85)
     for contact in contacts:
         print(f"{contact[0]:<5} {contact[1]:<15} {contact[2]:<15} {contact[3]:<15} {contact[4]}")
+
+
+def delete_contact(cur, con):
+    keep_going = True
+    contact_id = ""
+    while keep_going:
+        print_contacts(cur)
+        user_input = input("Enter the ID of the contact to be deleted or 'q' to cancel: ")
+        try:
+            contact_id = int(user_input)
+        except ValueError:
+            if user_input.lower() == 'q':
+                return
+            else:
+                print("Please enter the ID of the contact. Must be a valid integer.")
+        else:
+            res = cur.execute("SELECT id FROM contacts")
+            contact_id_list = res.fetchall()
+            valid_id = any(contact_id in contact for contact in contact_id_list)
+            if valid_id:
+                keep_going = False
+            else:
+                print("The ID you entered does not exist. Please")
+    
+    cur.execute("DELETE FROM contacts WHERE id = ?", (contact_id,))
+    con.commit()
+
+        
+
+

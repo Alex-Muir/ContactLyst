@@ -29,6 +29,7 @@ def main():
             print("'Update contact details' selected")
         elif selection == '5':
             print("'Delete a contact' selected")
+            dm.delete_contact(cur, con)
         elif selection == '0':
             print("'Exit' selected")
             con.close()

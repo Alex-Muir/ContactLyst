@@ -1,4 +1,4 @@
-# Functions to help data
+# Functions to help database_manager functions and main.py
 
 def print_menu():
     """Print the user menu. Used in main.py"""
@@ -37,10 +37,9 @@ def get_phone_number():
 
 
 def get_email():
-    """Get the email of the contact"""
+    """Get the email of the contact. Used in database_manager.py"""
     email = None
-    while not email:
-        email = input("Email (optional): ")
+    email = input("Email (optional): ")
     email = email if email else None
     return email
 
