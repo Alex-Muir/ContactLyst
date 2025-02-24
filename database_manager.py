@@ -3,7 +3,6 @@ import helpers as h
 
 # functions for interfacing with the database
 
-
 def create_table(cur, con):
     """Create the table to hold contacts"""
     try:
@@ -34,10 +33,9 @@ def print_contacts(cur):
 
 def delete_contact(cur, con):
     """Delete a contact from the database"""
-    keep_going = True
     contact_id = ""
 
-    while keep_going:
+    while True:
         print_contacts(cur)
         user_input = input("Enter the ID of the contact to be deleted or 'q' to cancel: ")
         try:
@@ -48,13 +46,9 @@ def delete_contact(cur, con):
             else:
                 print("Please enter the ID of the contact. Must be a valid integer.")
         else:
-            res = cur.execute("SELECT id FROM contacts")
-            contact_id_list = res.fetchall()
-            # Check whether the id entered by the user is actually 
-            # found in the list of tuples returned by res.fetchall()
-            valid_id = any(contact_id in contact for contact in contact_id_list)
-            if valid_id:
-                keep_going = False
+            res = cur.execute("SELECT id FROM contacts WHERE id = ?", (contact_id,))
+            if res.fetchone():
+                break
             else:
                 print("The ID you entered does not exist. Please enter a valid ID.")
     
@@ -64,10 +58,10 @@ def delete_contact(cur, con):
         
 def update_contact(cur, con):
     """Update a contacts details"""
-    keep_going = True
     contact_id = ""
 
-    while keep_going:
+    # Get a valid contact id
+    while True:
         print_contacts(cur)
         user_input = input("Enter the ID of the contact to be updated or 'q' to cancel: ")
         try:
@@ -78,74 +72,25 @@ def update_contact(cur, con):
             else:
                 print("Please enter the ID of the contact. Must be a valid integer.")
         else:
-            res = cur.execute("SELECT id FROM contacts")
-            contact_id_list = res.fetchall()
-            # Check whether the id entered by the user is actually 
-            # found in the list of tuples returned by res.fetchall()
-            valid_id = any(contact_id in contact for contact in contact_id_list)
-            if valid_id:
-                keep_going = False
+            res = cur.execute("SELECT id FROM contacts WHERE id = ?", (contact_id,))
+            if res.fetchone():
+                break
             else:
                 print("The ID you entered does not exist. Please enter a ")
 
-    # Next add section to prompt user for changes to be made to fname, lname, phone_number, or email.
+    # Move the result to a tuple
     res = cur.execute("SELECT fname, lname, phone_number, email FROM contacts WHERE id = ?", (contact_id,))
-    contact_list = res.fetchall()
-    contact = contact_list[0]
+    contact = res.fetchone()
 
+    # Set respective contact details to a clearly identifiable variable
     f_name = contact[0]
     l_name = contact[1]
     phone_number = contact[2]
     email = contact[3]
 
-    confirm = ''
-
-    # Update first name
-    update = input(f"Do you want to update the contact's first name from {f_name}? "
-    "Enter 'y' to update. Enter anything else to skip: ")
-
-    if update.lower() == 'y':
-        while True:
-            f_name = input("What is the updated first name of the contact? ")
-            confirm = input(f"Is {f_name} correct? Enter 'y' if correct. Enter anything else to reenter")
-            if confirm.lower() == 'y':
-                break
-
-    # Update last name
-    update = input(f"Do you want to update the contact's last name from {l_name}? "
-    "Enter 'y' to update. Enter anything else to skip: ")
-
-    if update.lower() == 'y':
-        while True:
-            l_name = input("What is the updated last name of the contact? ")
-            confirm = input(f"Is {l_name} correct? Enter 'y' if correct. Enter anything else to reenter")
-            if confirm.lower() == 'y':
-                break
-
-    # Update phone number
-    update = input(f"Do you want to update the contact's phone number from {phone_number}? "
-    "Enter 'y' to update. Enter anything else to skip: ")
-
-    if update.lower() == 'y':
-        while True:
-            phone_number = input("What is the updated phone number of the contact? ")
-            confirm = input(f"Is {phone_number} correct? Enter 'y' if correct. Enter anything else to reenter")
-            if confirm.lower() == 'y':
-                break
-
-    # Update email
-    update = input(f"Do you want to update the contact's email from {email}? "
-    "Enter 'y' to update. Enter anything else to skip: ")
-
-    if update.lower() == 'y':
-        while True:
-            email = input("What is the updated email of the contact? ")
-            confirm = input(f"Is {email} correct? Enter 'y' if correct. Enter anything else to reenter")
-            if confirm.lower() == 'y':
-                break
-
-    updated_contact = (f_name, l_name, phone_number, email, contact_id)
-    cur.execute("UPDATE contacts SET fname = ?, lname = ?, phone_number = ?, email = ? WHERE id = ?",updated_contact)
+    # Update and commit
+    updated_contact = h.get_contact_updates(f_name, l_name, phone_number, email) + (contact_id,)
+    cur.execute("UPDATE contacts SET fname = ?, lname = ?, phone_number = ?, email = ? WHERE id = ?", updated_contact)
     con.commit()
             
 

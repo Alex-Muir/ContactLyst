@@ -56,3 +56,74 @@ def get_contact_info():
 
     contact_info = (f_name, l_name, phone_number, email)
     return contact_info
+
+
+def update_first_name(f_name):
+    """Update the contact's first name. Used in helpers.py"""
+    while True:
+        f_name = input("What is the updated first name of the contact? ")
+        confirm = input(f"Is {f_name} correct? Enter 'y' if correct. Enter anything else to reenter")
+        if confirm.lower() == 'y':
+            break
+    return f_name
+
+def update_last_name(l_name):
+    """Update contact's last name. Used in helpers.py"""
+    while True:
+        l_name = input("What is the updated last name of the contact? ")
+        confirm = input(f"Is {l_name} correct? Enter 'y' if correct. Enter anything else to reenter")
+        if confirm.lower() == 'y':
+            break
+    return l_name
+
+def update_phone_number(phone_number):
+    """Update contact's phone number. Used in helpers.py"""
+    while True:
+        phone_number = input("What is the updated phone number of the contact? ")
+        confirm = input(f"Is {phone_number} correct? Enter 'y' if correct. Enter anything else to reenter")
+        if confirm.lower() == 'y':
+            break
+    return phone_number
+
+def update_email(email):
+    """Update contact's email. Used in helpers.py"""
+    while True:
+        email = input("What is the updated email of the contact? ")
+        confirm = input(f"Is {email} correct? Enter 'y' if correct. Enter anything else to reenter")
+        if confirm.lower() == 'y':
+            break
+    return email
+
+
+def get_contact_updates(f_name, l_name, phone_number, email):
+    """Update applicable contact details. Used in database_manager.py"""
+
+    # Update first name
+    update = input(f"Do you want to update the contact's first name from {f_name}? "
+    "Enter 'y' to update. Enter anything else to skip: ")
+
+    if update.lower() == 'y':
+        f_name = update_first_name(f_name)
+
+    # Update last name
+    update = input(f"Do you want to update the contact's last name from {l_name}? "
+    "Enter 'y' to update. Enter anything else to skip: ")
+
+    if update.lower() == 'y':
+        l_name = update_last_name(l_name)
+
+    # Update phone number
+    update = input(f"Do you want to update the contact's phone number from {phone_number}? "
+    "Enter 'y' to update. Enter anything else to skip: ")
+
+    if update.lower() == 'y':
+        phone_number = update_phone_number(phone_number)
+
+    # Update email
+    update = input(f"Do you want to update the contact's email from {email}? "
+    "Enter 'y' to update. Enter anything else to skip: ")
+
+    if update.lower() == 'y':
+        email = update_email(email)
+
+    return (f_name, l_name, phone_number, email)
