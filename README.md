@@ -17,7 +17,7 @@ the option you want and press Enter
 When adding contacts you must enter a first name, a last name, and a phone number. 
 An email is optional. The phone number and email (if entered) must be unique to each
 contact.     
-![Screenshot of prompts for adding a new contact](images/add_conatct.png)   
+![Screenshot of prompts for adding a new contact](images/add_contact.png)   
 ### Viewing your contact book   
 After a few additions, your contact book may look something like this:
 ![Screenshot of the contact book after a few additions](images/view_all.png)   
@@ -33,8 +33,9 @@ You have the option to search for a contact by name. The search parameter can be
 a first name, last name, or a partial name.   
 ![Screenshot of search by name](images/partial_search.png)   
 ### Deleting a contact   
-Like updating a contct, to delete a contact you will need to enter the contact's id.
-That is all that's required to delete a contact.
+Like updating a contact, to delete a contact you will need to enter the contact's id.
+That is all that's required to delete a contact.  
+![Screenshot of deleting a contact](images/delete.png)
 
 
 
